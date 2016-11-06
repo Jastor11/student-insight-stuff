@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import merge from '../../../utils/Merge';
 
 import ServicesList from './ServicesList';
@@ -107,25 +108,26 @@ class ServicesDetails extends React.Component {
   }
   
   renderRecordServiceSection() {
+    const {student, requests, currentEducator, serviceTypesIndex, educatorsIndex} = this.props;
     if (this.state.isAddingService || this.props.requests.saveService !== null) {
-      return createEl(RecordService, {
-        studentFirstName: this.props.student.first_name,
-        studentId: this.props.student.id,
-        onSave: this.onClickSaveService,
-        onCancel: this.onCancelRecordService,
-        requestState: this.props.requests.saveService,
-
-        nowMoment: moment.utc(), // TODO(kr) thread through
-        currentEducator: this.props.currentEducator,
-        serviceTypesIndex: this.props.serviceTypesIndex,
-        educatorsIndex: this.props.educatorsIndex,
-      });
+      return (
+        <RecordService 
+          studentFirstName={student.first_name},
+          studentId={student.id},
+          onSave={this.onClickSaveService},
+          onCancel={this.onCancelRecordService},
+          requestState={requests.saveService},
+          nowMoment={moment.utc()},
+          currentEducator={currentEducator}
+          serviceTypesIndex={serviceTypesIndex}
+          educatorsIndex={educatorsIndex}      
+        />
+      )
     }
-
-    return dom.button({
-      className: 'btn record-service',
-      onClick: this.onClickRecordService
-    }, 'Record service')
+  
+    return (
+      <button className="btn record-service" onClick={this.onClickRecordService}>Record Service</button>
+    )
   }  
 }
 
